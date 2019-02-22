@@ -1,4 +1,5 @@
 <?php
+
 // search form
 echo "<form role='search' action='api/website/search.php'>";
     echo "<div class='input-group col-md-3 pull-left margin-right-1em'>";
@@ -12,11 +13,11 @@ echo "</form>";
  
 // create website button
 echo "<div class='right-button-margin'>";
-    echo "<a href='api/website/create.php' class='btn btn-primary pull-right'>";
+    echo "<a href='../../api/website/create.php' class='btn btn-primary pull-right'>";
         echo "<span class='glyphicon glyphicon-plus'></span> Create Website";
     echo "</a>";
 echo "</div>";
- 
+
 // display the products if there are any
 if($total_rows>0){
  
@@ -40,7 +41,7 @@ if($total_rows>0){
              echo "<td>";
  
                     // read product button
-                    echo "<a href='api/website/read_single.php?id={$id}' class='btn btn-primary left-margin'>";
+                    echo "<a href='../../api/website/read_single.php?id={$id}' class='btn btn-primary left-margin'>";
                         echo "<span class='glyphicon glyphicon-list'></span> Read";
                     echo "</a>";
  
@@ -64,6 +65,7 @@ if($total_rows>0){
  
 // tell the user there are no products
 else{
+    echo "<div> </div>";
     echo "<div class='alert alert-danger'>No products found.</div>";
 }
 ?>

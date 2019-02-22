@@ -27,6 +27,11 @@ $page_url="search.php?s={$search_term}&";
 // count total rows - used for pagination
 $total_rows=$website->count_all_by_search($search_term);
 // read_template.php controls how the product list will be rendered
+ echo "<div class='right-button-margin'>";
+                echo "<a href='../../index.php' class='btn btn-default pull-right'>";
+                echo "<span class='glyphicon glyphicon-list'></span> Back to the list" ;
+                echo "</a>";
+ echo "</div>";
 include_once "../../read_template.php";
  
 // layout_footer.php holds our javascript and closing html tags

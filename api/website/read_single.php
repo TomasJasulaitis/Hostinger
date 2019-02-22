@@ -25,11 +25,13 @@ $website->id = $id;
 $website->read_single();
 
 // read products button
-echo "<div class='right-button-margin'>";
-    echo "<a href='../../index.php' class='btn btn-primary pull-right'>";
-        echo "<span class='glyphicon glyphicon-list'></span> Read Products";
-    echo "</a>";
-echo "</div>";
+ echo "<div class='right-button-margin'>";
+                echo "<a href='../../index.php' class='btn btn-default pull-right'>";
+                echo "<span class='glyphicon glyphicon-list'></span> Back to the list" ;
+                echo "</a>";
+ echo "</div>";
+
+
 
 // HTML table for displaying a product details
 echo "<table class='table table-hover table-responsive table-bordered'>";

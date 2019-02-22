@@ -210,7 +210,7 @@ public function search($search_term, $from_record_num, $records_per_page){
  
     // execute query
     $stmt->execute();
- 
+ 	
     // return values from database
     return $stmt;
 }
