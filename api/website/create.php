@@ -3,15 +3,13 @@
 $page_title = "Create website";
 
 include_once "../../layout_header.php";
-
-include_once '../../config/Database.php';
-include_once '../../models/Website.php';
+include_once '../../config/database.php';
+include_once '../../models/website.php';
 include_once '../../simple_html_dom/simple_html_dom.php';
 
 //Instantiate DB and connect
 $database = new Database();
 $db = $database->connect();
-
 //Instantiate website object
 $website = new Website($db);
 
@@ -48,6 +46,7 @@ foreach($html->find('a') as $element){
   }
 }
 }
+
 
 
 

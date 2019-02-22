@@ -8,8 +8,8 @@ $id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: missing ID.');
  
 // include database and object files
 include_once "../../layout_header.php";
-include_once '../../config/Database.php';
-include_once '../../models/Website.php';
+include_once '../../config/database.php';
+include_once '../../models/website.php';
  
 // get database connection
 $database = new Database();
