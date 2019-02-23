@@ -1,109 +1,111 @@
 <?php 
- 	class Website{
- 		//DB stuff
- 		private $conn;
- 		private $table = 'website';
+class Website{
+	//DB stuff
+	private $conn;
+	private $table = 'website';
 
- 		//Website properties
- 		public $id;
- 		public $url;
- 		public $nofollow;
- 		public $time_checked;
- 		public $url_host;
- 		public $contains_link;
- 		public $checked;
+	//Website properties
+	public $id;
+	public $url;
+	public $nofollow;
+	public $time_checked;
+	public $url_host;
+	public $contains_link;
+	public $checked;
 
- 		//Contruct with DB
- 		public function __construct($db){
- 			$this->conn = $db;
- 		}
+//Contruct with DB
+public function __construct($db){
+	$this->conn = $db;
+}
 
- 		
+public function read_single() {
+ 	$query = "
+ 	SELECT
+    	url,
+        nofollow,
+ 		time_checked,
+ 		url_host,
+ 		contains_link,
+ 		checked
+ 	FROM 
+ 		" . $this->table . "
+ 	WHERE 
+ 		id = ?
+ 	LIMIT 0,1";
 
- 	public function read_single() {
- 		$query = "SELECT
-    			url,
-                nofollow,
- 				time_checked,
- 				url_host,
- 				contains_link,
- 				checked
- 		FROM " . $this->table . "
- 		WHERE 
- 			id = ?
- 		LIMIT 0,1";
+	//prepare query
+	$stmt = $this->conn->prepare($query);
 
- 		//prepare query
- 		$stmt = $this->conn->prepare($query);
+	//bind ID, Not first, but one.
+	$stmt->bindParam(1, $this->id);
 
- 		//bind ID, Not first, but one.
- 		$stmt->bindParam(1, $this->id);
+	//execute query
+	$stmt->execute();
 
- 		//execute query
- 		$stmt->execute();
+	$row = $stmt->fetch(PDO::FETCH_ASSOC);
 
- 		$row = $stmt->fetch(PDO::FETCH_ASSOC);
-
- 		//set properties
- 		$this->url = $row['url'];
- 		$this->nofollow = $row['nofollow'];
- 		$this->time_checked = $row['time_checked'];
- 		$this->url_host = $row['url_host'];
+	//set properties
+	$this->url = $row['url'];
+	$this->nofollow = $row['nofollow'];
+	$this->time_checked = $row['time_checked'];
+	$this->url_host = $row['url_host'];
+	$this->contains_link = $row['contains_link'];
+	$this->checked = $row['checked'];
  	}
 
- 	public function create(){
- 		$query = "INSERT INTO " . $this->table . "
- 		SET
- 		 			 url = :url,
- 					 nofollow = :nofollow,
- 					 url_host = :url_host,
- 					 checked = 0,
- 					 contains_link = 0";
+public function create(){
+	$query = "
+	INSERT INTO 
+		" . $this->table . "
+	SET
+		url = :url,
+		nofollow = :nofollow,
+		url_host = :url_host,
+		checked = false,
+		contains_link = false";
 
- 			$this->url = htmlspecialchars(strip_tags($this->url));
- 			$this->nofollow = htmlspecialchars(strip_tags($this->nofollow));
- 			$this->url_host = htmlspecialchars(strip_tags($this->url_host));
+	$this->url = htmlspecialchars(strip_tags($this->url));
+	$this->nofollow = htmlspecialchars(strip_tags($this->nofollow));
+	$this->url_host = htmlspecialchars(strip_tags($this->url_host));
 
-	        $stmt = $this->conn->prepare($query);
- 			$stmt->bindParam(':url', $this->url);
- 		    $stmt->bindParam(':nofollow', $this->nofollow);
- 		    $stmt->bindParam(':url_host', $this->url_host);
+    $stmt = $this->conn->prepare($query);
+	$stmt->bindParam(':url', $this->url);
+    $stmt->bindParam(':nofollow', $this->nofollow);
+    $stmt->bindParam(':url_host', $this->url_host);
  	
- 		     if($stmt->execute()){
- 		    	return true;
- 		    }
- 		    else{
- 		    	//print error if something goes wrong
- 		    	//printf("Error: %s.\n", $stmt->error);
- 		    	return false;
+    if($stmt->execute()){
+    	return true;
+    }
+    else{
+    	//print error if something goes wrong
+    	//printf("Error: %s.\n", $stmt->error);
+    	return false;
+    }
+}
 
- 		    }
- 		}
-
- 	function read_all($from_record_num, $records_per_page){
- 
-    $query = "SELECT
-    			id,
-    			url,
-                nofollow,
- 				time_checked,
- 				url_host,
- 				contains_link,
- 				checked
-            FROM
-                " . $this->table . "
-            ORDER BY
-                url ASC
-            LIMIT
-                {$from_record_num}, {$records_per_page}";
+public function read_all($from_record_num, $records_per_page){
+    $query = "
+    SELECT
+    	id,
+    	url,
+        nofollow,
+ 		time_checked,
+ 		url_host,
+ 		contains_link,
+ 		checked
+    FROM
+        " . $this->table . "
+    ORDER BY
+        url ASC
+    LIMIT
+        {$from_record_num}, {$records_per_page}";
     $stmt = $this->conn->prepare( $query );
     $stmt->execute();
  
     return $stmt;
 }
 
-  function read_all_for_daily_task(){
- 
+public function read_all_for_daily_task(){
     $query = "SELECT
     			id,
     			url,
@@ -119,16 +121,21 @@
 }
 
 // delete the product
-function delete(){
+public function delete(){
  
-    $query = "DELETE FROM " . $this->table . " WHERE id = ?";
+    $query = "
+    DELETE FROM 
+   		" . $this->table . "
+    WHERE
+    	id = ?";
      
     $stmt = $this->conn->prepare($query);
     $stmt->bindParam(1, $this->id);
  
     if($result = $stmt->execute()){
         return true;
-    }else{
+    }
+    else{
         return false;
     }
 }
@@ -241,7 +248,6 @@ public function count_all_rows_checked(){
     return $row['total_rows'];
 }
 
-
 public function count_all_rows_nofollow(){
     // select query
     $query = 'SELECT
@@ -273,9 +279,8 @@ public function count_all_rows_missing_link(){
     return $row['total_rows'];
 }
 
-function update(){
-
-$query = "UPDATE " . $this->table . "
+public function update(){
+	$query = "UPDATE " . $this->table . "
  		SET
  			nofollow = :nofollow,
  			time_checked = :time_checked,
@@ -299,33 +304,75 @@ $query = "UPDATE " . $this->table . "
  	$stmt->bindParam(':checked', $this->checked);
 
 
- if($stmt->execute()){
+ 	if($stmt->execute()){
  	return true;
- }
- else{
+	 }
+	else{
  	return false;
  	}
 }
-}
 
-function reset_checked(){
+public function reset_checked(){
 
-$query = "UPDATE website
+	$query = "UPDATE website
  		SET
  			checked = 0
  		WHERE 
  			1
  		";
-$stmt = $this->conn->prepare($query);
+	$stmt = $this->conn->prepare($query);
   
- if($stmt->execute()){
+ 	if($stmt->execute()){
  	return true;
- }
- else{
+ 	}
+ 	else{
  	return false;
  	}
 }
 
+public function get_no_link(){
+ 
+    // select query
+    $query = "
+    		SELECT
+    			url
+            FROM
+                " . $this->table . " 
+            WHERE
+                contains_link = 0
+            ORDER BY
+                url ASC"; 
+    // prepare query statement
+    $stmt = $this->conn->prepare( $query );
+ 
+    // execute query
+    $stmt->execute();
+ 	
+    // return values from database
+    return $stmt;
+}
 
+public function get_no_nofollow(){
+ 
+    // select query
+    $query = "
+    		SELECT
+    			url
+            FROM
+                " . $this->table . " 
+            WHERE
+                nofollow = 1
+            ORDER BY
+                url ASC"; 
+    // prepare query statement
+    $stmt = $this->conn->prepare( $query );
+ 
+    // execute query
+    $stmt->execute();
+ 	
+    // return values from database
+    return $stmt;
+}
+}
 
 ?>

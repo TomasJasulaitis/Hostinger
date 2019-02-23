@@ -40,7 +40,7 @@ if($total_rows>0){
                 echo "<td>{$time_checked}</td>";
                 echo "<td>{$url_host}</td>";
                 echo "<td>{$contains_link}</td>";
-                 echo "<td>{$checked}</td>";
+                echo "<td>{$checked}</td>";
  
              echo "<td>";
  
@@ -48,16 +48,6 @@ if($total_rows>0){
                     echo "<a href='read_single.php?id={$id}' class='btn btn-primary left-margin'>";
                         echo "<span class='glyphicon glyphicon-list'></span> Read";
                     echo "</a>";
-
-                       // read product button
-                    echo "<a href='update.php' class='btn btn-primary left-margin'>";
-                        echo "<span class='glyphicon glyphicon-list'></span> Update";
-                    echo "</a>";
-
-                    echo "<a href='reset_all.php' class='btn btn-primary left-margin'>";
-                        echo "<span class='glyphicon glyphicon-list'></span> Reset";
-                    echo "</a>";
- 
  
                     // delete product button
                     echo "<a delete-id='{$id}' class='btn btn-danger delete-object'>";
