@@ -211,6 +211,67 @@ public function count_all_by_search($search_term){
     return $row['total_rows'];
 }
 
+public function count_all_rows(){
+    // select query
+    $query = 'SELECT
+                COUNT(*) as total_rows
+            FROM
+                ' . $this->table . '
+            WHERE
+                1';
+    // prepare query statement
+    $stmt = $this->conn->prepare( $query );
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row['total_rows'];
+}
+
+public function count_all_rows_checked(){
+    // select query
+    $query = 'SELECT
+                COUNT(*) as total_rows
+            FROM
+                ' . $this->table . '
+            WHERE
+                checked = 1';
+    // prepare query statement
+    $stmt = $this->conn->prepare( $query );
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row['total_rows'];
+}
+
+
+public function count_all_rows_nofollow(){
+    // select query
+    $query = 'SELECT
+                COUNT(*) as total_rows
+            FROM
+                ' . $this->table . '
+            WHERE
+                nofollow = 1';
+    // prepare query statement
+    $stmt = $this->conn->prepare( $query );
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row['total_rows'];
+}
+
+public function count_all_rows_missing_link(){
+    // select query
+    $query = 'SELECT
+                COUNT(*) as total_rows
+            FROM
+                ' . $this->table . '
+            WHERE
+                contains_link = 0 AND
+                time_checked > UNIX_TIMESTAMP(NOW() - INTERVAL 25 HOUR)';
+    // prepare query statement
+    $stmt = $this->conn->prepare( $query );
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row['total_rows'];
+}
 
 function update(){
 
