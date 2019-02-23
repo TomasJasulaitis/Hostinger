@@ -1,7 +1,7 @@
 <?php
 
 // search form
-echo "<form role='search' action='api/website/search.php'>";
+echo "<form role='search' action='search.php'>";
     echo "<div class='input-group col-md-3 pull-left margin-right-1em'>";
         $search_value=isset($search_term) ? "value='{$search_term}'" : "";
         echo "<input type='text' class='form-control' placeholder='Type website url...' name='s' id='srch-term' required {$search_value} />";
@@ -11,9 +11,9 @@ echo "<form role='search' action='api/website/search.php'>";
     echo "</div>";
 echo "</form>";
  
-// create website button
+
 echo "<div class='right-button-margin'>";
-    echo "<a href='../../api/website/create.php' class='btn btn-primary pull-right'>";
+    echo "<a href='create.php' class='btn btn-primary pull-right'>";
         echo "<span class='glyphicon glyphicon-plus'></span> Create Website";
     echo "</a>";
 echo "</div>";
@@ -27,6 +27,8 @@ if($total_rows>0){
             echo "<th>No follow</th>";
             echo "<th>Time checked</th>";
             echo "<th>Url host</th>";
+            echo "<th>Contains link</th>";
+             echo "<th>Checked</th>";
         echo "</tr>";
  
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
@@ -37,12 +39,23 @@ if($total_rows>0){
                 echo "<td>{$nofollow}</td>";
                 echo "<td>{$time_checked}</td>";
                 echo "<td>{$url_host}</td>";
+                echo "<td>{$contains_link}</td>";
+                 echo "<td>{$checked}</td>";
  
              echo "<td>";
  
                     // read product button
-                    echo "<a href='../../api/website/read_single.php?id={$id}' class='btn btn-primary left-margin'>";
+                    echo "<a href='read_single.php?id={$id}' class='btn btn-primary left-margin'>";
                         echo "<span class='glyphicon glyphicon-list'></span> Read";
+                    echo "</a>";
+
+                       // read product button
+                    echo "<a href='update.php' class='btn btn-primary left-margin'>";
+                        echo "<span class='glyphicon glyphicon-list'></span> Update";
+                    echo "</a>";
+
+                    echo "<a href='reset_all.php' class='btn btn-primary left-margin'>";
+                        echo "<span class='glyphicon glyphicon-list'></span> Reset";
                     echo "</a>";
  
  
@@ -60,7 +73,7 @@ if($total_rows>0){
     echo "</table>";
  
     // paging buttons
-    include_once 'api/website/paging.php';
+    include_once 'paging.php';
 }
  
 // tell the user there are no products

@@ -10,40 +10,24 @@
  		public $nofollow;
  		public $time_checked;
  		public $url_host;
+ 		public $contains_link;
+ 		public $checked;
 
  		//Contruct with DB
  		public function __construct($db){
  			$this->conn = $db;
  		}
 
- 		//get websites
- 		public function read() {
- 		//create query
- 			$query = "
- 		SELECT
- 			id,
- 			url,
- 			nofollow,
- 			time_checked,
- 			url_host
- 		FROM " . $this->table . "
- 		ORDER by url";
-
-
- 		//prepare query
- 		$stmt = $this->conn->prepare($query);
- 		//execute query
- 		$stmt->execute();
-
- 		return $stmt;
- 	}
+ 		
 
  	public function read_single() {
  		$query = "SELECT
- 			url,
- 			nofollow,
- 			time_checked,
- 			url_host
+    			url,
+                nofollow,
+ 				time_checked,
+ 				url_host,
+ 				contains_link,
+ 				checked
  		FROM " . $this->table . "
  		WHERE 
  			id = ?
@@ -72,12 +56,13 @@
  		SET
  		 			 url = :url,
  					 nofollow = :nofollow,
- 					 url_host = :url_host";
+ 					 url_host = :url_host,
+ 					 checked = 0,
+ 					 contains_link = 0";
 
  			$this->url = htmlspecialchars(strip_tags($this->url));
  			$this->nofollow = htmlspecialchars(strip_tags($this->nofollow));
  			$this->url_host = htmlspecialchars(strip_tags($this->url_host));
-
 
 	        $stmt = $this->conn->prepare($query);
  			$stmt->bindParam(':url', $this->url);
@@ -95,38 +80,6 @@
  		    }
  		}
 
- 	/*public function update(){
- 		//create a query
- 		$query = '
- 			UPDATE ' . $this->table . '
- 			SET 
- 				nofollow = :nofollow,
- 	
- 				url_host = :url_host
- 			WHERE 
- 				url = :url';
- 		
- 		$this->nofollow = htmlspecialchars(strip_tags($this->nofollow));
- 		//$this->time_checked = htmlspecialchars(strip_tags($this->time_checked));
- 		$this->url_host = htmlspecialchars(strip_tags($this->url_host));
- 		$this->url = htmlspecialchars(strip_tags($this->url));
-
-	    $stmt = $this->conn->prepare($query);
- 		$stmt->bindParam(':nofollow', $this->nofollow);
- 		//$stmt->bindParam(':time_checked', $this->time_checked);
- 		$stmt->bindParam(':url_host', $this->url_host);
- 		$stmt->bindParam(':url', $this->url);
-
- 		if($stmt->execute()){
- 		    	return true;
- 		    }
- 		else{
- 		    	//print error if something goes wrong
- 		    	//printf("Error: %s.\n", $stmt->error);
- 		    	return false;
- 		}
- 	}*/
-
  	function read_all($from_record_num, $records_per_page){
  
     $query = "SELECT
@@ -134,7 +87,9 @@
     			url,
                 nofollow,
  				time_checked,
- 				url_host
+ 				url_host,
+ 				contains_link,
+ 				checked
             FROM
                 " . $this->table . "
             ORDER BY
@@ -144,6 +99,22 @@
     $stmt = $this->conn->prepare( $query );
     $stmt->execute();
  
+    return $stmt;
+}
+
+  function read_all_for_daily_task(){
+ 
+    $query = "SELECT
+    			id,
+    			url,
+ 				url_host
+            FROM
+                " . $this->table . "
+            WHERE CHECKED = 0
+       ";
+    $stmt = $this->conn->prepare( $query );
+    $stmt->execute();
+ 	
     return $stmt;
 }
 
@@ -188,7 +159,9 @@ public function search($search_term, $from_record_num, $records_per_page){
     			url,
                 nofollow,
  				time_checked,
- 				url_host
+ 				url_host,
+ 				contains_link,
+ 				checked
             FROM
                 " . $this->table . " 
             WHERE
@@ -239,11 +212,59 @@ public function count_all_by_search($search_term){
 }
 
 
+function update(){
+
+$query = "UPDATE " . $this->table . "
+ 		SET
+ 			nofollow = :nofollow,
+ 			time_checked = :time_checked,
+ 			contains_link = :contains_link,
+ 			checked = :checked
+ 		WHERE 
+ 			id = :id
+ 		";
+ 	$this->id = htmlspecialchars(strip_tags($this->id));
+ 	$this->nofollow = htmlspecialchars(strip_tags($this->nofollow));
+ 	$this->time_checked = htmlspecialchars(strip_tags($this->time_checked));
+ 	$this->contains_link = htmlspecialchars(strip_tags($this->contains_link));
+ 	$this->checked = htmlspecialchars(strip_tags($this->checked));
 
 
+	$stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':id', $this->id);
+ 	$stmt->bindParam(':nofollow', $this->nofollow);
+ 	$stmt->bindParam(':time_checked', $this->time_checked);
+ 	$stmt->bindParam(':contains_link', $this->contains_link);
+ 	$stmt->bindParam(':checked', $this->checked);
+
+
+ if($stmt->execute()){
+ 	return true;
+ }
+ else{
+ 	return false;
+ 	}
+}
+}
+
+function reset_checked(){
+
+$query = "UPDATE website
+ 		SET
+ 			checked = 0
+ 		WHERE 
+ 			1
+ 		";
+$stmt = $this->conn->prepare($query);
+  
+ if($stmt->execute()){
+ 	return true;
+ }
+ else{
+ 	return false;
+ 	}
 }
 
 
- 
 
 ?>

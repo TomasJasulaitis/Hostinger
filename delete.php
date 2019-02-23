@@ -3,8 +3,8 @@
 if($_POST){
  
     // include database and object file
-include_once '../../config/database.php';
-include_once '../../models/website.php';
+include_once 'config/database.php';
+include_once 'models/website.php';
  
 //Instantiate DB and connect
 $database = new Database();

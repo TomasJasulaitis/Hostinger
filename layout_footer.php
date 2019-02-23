@@ -30,12 +30,15 @@ $(document).on('click', '.delete-object', function(){
         callback: function (result) {
  
             if(result==true){
-                $.post('api/website/delete.php', {
+                $.post('delete.php', {
                     object_id: id
                 }, function(data){
                     location.reload();
-                }).fail(function() {
-                    alert('Unable to delete.');
+                    location= '?message=success';
+                }
+                ).fail(function() {
+               		 location= '?message=failure';
+                   alert('Unable to delete.');
                     });
             }
         }
