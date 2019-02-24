@@ -18,6 +18,7 @@ function update_for_mailer(){
 $database = new Database();
 $db = $database->connect();
 $website = new Website($db);
+//reads all entries from DB
 $stmt = $website->read_all_for_daily_task();
 while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 
@@ -25,6 +26,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
  	$website->url = $row['url'];
  	$website->url_host = $row['url_host'];
 
+	//making regex for preg_match function
 	$new_host1 = str_replace('/','\/',$website->url_host);
 	$new_host2 = str_replace('.','\.',$new_host1);
 	$new_host3 = str_replace('-','\-',$new_host2);
@@ -35,23 +37,22 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 	$website->nofollow = false;
 	$website->checked = false;
 
+	//finds all the <a> tag content in website
 	foreach($html->find('a') as $element){
+		//checks for website regex in the specified website
 		if(preg_match($new_host5, $element)){
 			$website->contains_link = true;
+			//check for no follow regex in the specified website
 			if(preg_match("/nofollow/", $element)){
 				$website->nofollow = true;
 			}
 		}
+	//times the update
 	$website->time_checked = date("Y-m-d H:i:s");
 	$website->checked = true;
 	}
- 	if($website->update()){
-       //header("Location: update.php?message=success");
-  	}
- 	else{
-  	  // header("Location: update.php?message=failure");
- 	}
-}
+ 	$website->update())
+   }
 }
 }
 

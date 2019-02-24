@@ -51,8 +51,11 @@ public function read_single() {
 	$this->url_host = $row['url_host'];
 	$this->contains_link = $row['contains_link'];
 	$this->checked = $row['checked'];
+
+	return $stmt;
  	}
 
+//create new website o
 public function create(){
 	$query = "
 	INSERT INTO 
@@ -120,7 +123,7 @@ public function read_all_for_daily_task(){
     return $stmt;
 }
 
-// delete the product
+// delete the website
 public function delete(){
  
     $query = "
@@ -132,12 +135,8 @@ public function delete(){
     $stmt = $this->conn->prepare($query);
     $stmt->bindParam(1, $this->id);
  
-    if($result = $stmt->execute()){
-        return true;
-    }
-    else{
-        return false;
-    }
+    $stmt->execute();
+    return $stmt;
 }
 
 // used for paging products
@@ -215,21 +214,6 @@ public function count_all_by_search($search_term){
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
  
-    return $row['total_rows'];
-}
-
-public function count_all_rows(){
-    // select query
-    $query = 'SELECT
-                COUNT(*) as total_rows
-            FROM
-                ' . $this->table . '
-            WHERE
-                1';
-    // prepare query statement
-    $stmt = $this->conn->prepare( $query );
-    $stmt->execute();
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
     return $row['total_rows'];
 }
 

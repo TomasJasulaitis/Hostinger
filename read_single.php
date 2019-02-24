@@ -1,6 +1,6 @@
 <?php
 
-$page_title = "Read single website";
+$page_title = "Reading single website";
 
 
 // get ID of the product to be read
@@ -23,51 +23,58 @@ $website->id = $id;
  
 // read the details of product to be read
 $website->read_single();
+ ?>
+<!DOCTYPE html>
+
+<style>
+table{
+    background-color: lightgrey;
+}
+</style>
+<?php
+
+//back to the start
+echo "<div class='right-button-margin'>
+               <a href='index.php' class='btn btn-default pull-right'>
+               <span class='glyphicon glyphicon-list'></span> Back to the list
+               </a>
+</div>";
 
 
-// read products button
- echo "<div class='right-button-margin'>";
-                echo "<a href='index.php' class='btn btn-default pull-right'>";
-                echo "<span class='glyphicon glyphicon-list'></span> Back to the list" ;
-                echo "</a>";
- echo "</div>";
 
-
-
-// HTML table for displaying a product details
-echo "<table class='table table-hover table-responsive table-bordered'>";
+// HTML table for displaying website details
+echo "<table class='table table-hover table-responsive table-bordered table-striped'>
+    <tr>
+       <td>Url</td>
+       <td>{$website->url}</td>
+   </tr>
  
-    echo "<tr>";
-        echo "<td>Url</td>";
-        echo "<td>{$website->url}</td>";
-    echo "</tr>";
+   <tr>
+       <td>Nofollow</td>
+       <td>{$website->nofollow}</td>
+   </tr>
  
-    echo "<tr>";
-        echo "<td>Nofollow</td>";
-        echo "<td>{$website->nofollow}</td>";
-    echo "</tr>";
+   <tr>
+       <td>Time checked</td>
+       <td>{$website->time_checked}</td>
+   </tr>
+
+   <tr>
+       <td>Url Host</td>
+       <td>{$website->url_host}</td>
+   </tr>
+
+ <tr>
+       <td>Contains link</td>
+       <td>{$website->contains_link}</td>
+   </tr>
+
+    <tr>
+       <td>Checked</td>
+       <td>{$website->checked}</td>
+   </tr>
  
-    echo "<tr>";
-        echo "<td>Time checked</td>";
-        echo "<td>{$website->time_checked}</td>";
-    echo "</tr>";
-
-    echo "<tr>";
-        echo "<td>Url Host</td>";
-        echo "<td>{$website->url_host}</td>";
-    echo "</tr>";
-
-  echo "<tr>";
-        echo "<td>Contains link</td>";
-        echo "<td>{$website->contains_link}</td>";
-    echo "</tr>";
-
-     echo "<tr>";
-        echo "<td>Checked</td>";
-        echo "<td>{$website->checked}</td>";
-    echo "</tr>";
- 
-echo "</table>";
+</table>";
  
 // set footer
 include_once "layout_footer.php";

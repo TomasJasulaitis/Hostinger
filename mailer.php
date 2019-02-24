@@ -15,12 +15,18 @@ $db = $database->connect();
 $updater = new Update($db);
 $website = new Website($db);
 
+//goes through all websites and checks for url that was specified
 $updater->update_for_mailer();
+//returns count of all the entries with checked as true
 $rows_checked = $website->count_all_rows_checked();
-$rows_in_db = $website->count_all_rows();
+//returns count all the rows in database
+$rows_in_db = $website->count_all();
+//returns count of all the entries with nofollow as true
 $nofollow_links = $website->count_all_rows_nofollow();
+//returns count of all the entries with contains as false
 $missing_links = $website->count_all_rows_missing_link();
 
+//if all rows are checked in DB
 if($rows_checked == $rows_in_db){
 
 $message   = "$rows_checked URLs checked, $missing_links backlinks not found, $nofollow_links found with NOFOLLOW: <br>
@@ -50,19 +56,20 @@ $mail->SMTPOptions = array(
     )
 );
 $mail->IsHTML(true);
-$mail->Username = "testreddragonemail@gmail.com"; // your gmail address
-$mail->Password = "Tomis1997"; // password
+$mail->Username = "testreddragonemail@gmail.com"; 
+$mail->Password = "Tomis1997"; 
 $mail->SMTPSecure ='tls';
 $mail->SetFrom("testreddragonemail@gmail.com");
-$mail->Subject = "Crawler information"; // Mail subject
+$mail->Subject = "Crawler information"; 
 $mail->Body    = $message;
 $mail->AddAddress($toAddress);
 if (!$mail->Send()) {
      echo "Mailer Error: " . $mail->ErrorInfo;
     
 } else {
-    echo "Mail sent succesfully";
-     $website->reset_checked();
+    echo "<h1> Mail sent succesfully </h1>";
+    //resets checked to false of all the entries 
+    $website->reset_checked();
 }
 }
 

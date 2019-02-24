@@ -13,7 +13,7 @@ $db = $database->connect();
  
 $website = new Website($db);
  
-$page_title = "Read Websites";
+$page_title = "Main page";
 include_once "layout_header.php";
  
 // query products

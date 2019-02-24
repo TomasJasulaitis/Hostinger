@@ -1,9 +1,11 @@
 .left-margin{
 	margin:0 .5em 0 0;
 }
-.right-button-margin{
-	margin 0 0 1em 0;
-	overflow: hidden;
+.div.input-group col-md-3 pull-left margin-right-1em{
+	margin-bottom: 10%;
+}
+.bottom-margin{
+	margin:0 0 .5em 0;
 }
 .moda-body{
 	padding: 20px 20px 0px 20px !important;

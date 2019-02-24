@@ -13,7 +13,14 @@
 
 <!-- our custom CSS -->
 <link rel="stylesheet" href="libs/css/custom.css" />
-  
+<style>
+body{
+	background-color: #ccf5ff;
+}
+
+
+</style>
+
 </head>
 <body>
  

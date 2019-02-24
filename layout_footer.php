@@ -1,6 +1,4 @@
 </div>
-    <!-- /container -->
- 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
  
@@ -20,11 +18,11 @@ $(document).on('click', '.delete-object', function(){
         message: "<h4>Are you sure?</h4>",
         buttons: {
             confirm: {
-                label: '<span class="glyphicon glyphicon-ok"></span> Yes',
+                label: '<span class="badge badge-primary"></span> Yes',
                 className: 'btn-danger'
             },
             cancel: {
-                label: '<span class="glyphicon glyphicon-remove"></span> No',
+                label: '<span class="badge badge-danger"></span> No',
                 className: 'btn-primary'
             }
         },
@@ -35,10 +33,8 @@ $(document).on('click', '.delete-object', function(){
                     object_id: id
                 }, function(data){
                     location.reload();
-                    location= '?message=success';
                 }
                 ).fail(function() {
-               		 location= '?message=failure';
                    alert('Unable to delete.');
                     });
             }
