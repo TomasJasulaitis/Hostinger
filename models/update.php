@@ -51,8 +51,9 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 	$website->time_checked = date("Y-m-d H:i:s");
 	$website->checked = true;
 	}
- 	$website->update())
+ 	$website->update();
    }
+   return $stmt;
 }
 }
 

@@ -4,6 +4,9 @@ class Database {
 
 	//DB params
 	private $DB_SERVER    = 'localhost';
+	//private $DB_NAME       = 'tomjas3';
+	//private $DB_USERNAME   = 'tomjas3';
+	//private $DB_PASSWORD   = 'fooShahcaipheeL9';
 	private $DB_NAME       = 'crawler';
 	private $DB_USERNAME   = 'root';
 	private $DB_PASSWORD   = '';

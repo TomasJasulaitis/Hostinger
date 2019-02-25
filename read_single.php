@@ -18,10 +18,10 @@ $db = $database->connect();
 // prepare objects
 $website = new Website($db);
  
-// set ID property of product to be read
+// set ID property of website to be read
 $website->id = $id;
  
-// read the details of product to be read
+// read the details of website to be read
 $website->read_single();
  ?>
 <!DOCTYPE html>
@@ -45,7 +45,7 @@ echo "<div class='right-button-margin'>
 // HTML table for displaying website details
 echo "<table class='table table-hover table-responsive table-bordered table-striped'>
     <tr>
-       <td>Url</td>
+       <td>Website</td>
        <td>{$website->url}</td>
    </tr>
  
@@ -60,7 +60,7 @@ echo "<table class='table table-hover table-responsive table-bordered table-stri
    </tr>
 
    <tr>
-       <td>Url Host</td>
+       <td>Host website</td>
        <td>{$website->url_host}</td>
    </tr>
 

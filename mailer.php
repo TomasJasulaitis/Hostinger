@@ -2,9 +2,9 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'PHPMailer\src/Exception.php';
-require 'PHPMailer\src/PHPMailer.php';
-require 'PHPMailer\src/SMTP.php';
+include_once ($_SERVER['DOCUMENT_ROOT'].'/hostinger/crawler/PHPMailer/src/Exception.php');
+include_once ($_SERVER['DOCUMENT_ROOT'].'/hostinger/crawler/PHPMailer/src/PHPMailer.php');
+include_once ($_SERVER['DOCUMENT_ROOT'].'/hostinger/crawler/PHPMailer/src/SMTP.php');
 include_once 'config/database.php';
 include_once 'models/website.php';
 include_once 'models/update.php';
@@ -16,7 +16,7 @@ $updater = new Update($db);
 $website = new Website($db);
 
 //goes through all websites and checks for url that was specified
-$updater->update_for_mailer();
+$updater->update_for_mailer(); 
 //returns count of all the entries with checked as true
 $rows_checked = $website->count_all_rows_checked();
 //returns count all the rows in database
@@ -37,12 +37,13 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
    extract($row);
    $message .= $url . "<br>";
 }
+
 $stmt = $website->get_no_nofollow();
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
    extract($row);
-   $message .= $url . "---NOFOLLOW--<br>";
+   $message .= $url . " ---NOFOLLOW--<br>";
 }
-$toAddress = "tomis.jasulaitis@gmail.com"; //To whom you are sending the mail.
+$toAddress = "phexsprays@gmail.com"; //To whom you are sending the mail.
 $mail = new PHPMailer();
 $mail->IsSMTP();
 $mail->SMTPAuth    = true;
@@ -56,18 +57,23 @@ $mail->SMTPOptions = array(
     )
 );
 $mail->IsHTML(true);
-$mail->Username = "testreddragonemail@gmail.com"; 
-$mail->Password = "Tomis1997"; 
+$mail->Username = "phexsprays@gmail.com"; 
+$mail->Password = 'ggusllgdflqbcjuh'; 
 $mail->SMTPSecure ='tls';
-$mail->SetFrom("testreddragonemail@gmail.com");
+$mail->SetFrom("testreddragonemail@example.com");
 $mail->Subject = "Crawler information"; 
 $mail->Body    = $message;
 $mail->AddAddress($toAddress);
 if (!$mail->Send()) {
      echo "Mailer Error: " . $mail->ErrorInfo;
-    
+
 } else {
     echo "<h1> Mail sent succesfully </h1>";
+     echo "<div class='right-button-margin'>";
+                echo "<a href='index.php' class='btn btn-default pull-right'>";
+                echo "<span class='glyphicon glyphicon-list'></span> Back to the list" ;
+                echo "</a>";
+ echo "</div>";
     //resets checked to false of all the entries 
     $website->reset_checked();
 }
